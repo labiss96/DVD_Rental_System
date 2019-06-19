@@ -25,4 +25,13 @@ public class DBHandler {
   public void addDVD(String name, String genre, String actor, String director) {
     DB.addDVD(name, genre, actor, director);
   }
+  public void updateDVD(String name, String genre, String actor, String director) {
+    DB.updateDVD(name, genre, actor, director);
+  }
+  public void deleteDVD(String name) {
+    DB.deleteDVD(name);
+  }
+  public List getDVDInfo(String name) {
+    return DB.getDVDInfo(name);
+  }
 }
