@@ -90,7 +90,7 @@ public class Controller {
     List list = dbHandler.getDVDList();
     int index = 1;
     Iterator<String> iterator = list.iterator();
-    
+    System.out.println();
     System.out.println("....................................");
     System.out.println("<<DVD List>>");
     
@@ -219,31 +219,38 @@ public class Controller {
     System.exit(0);
   }
   private void addDVD() {
-    String name, genre, actor, director;
+    String name, actor, director;
+    int genre;
     
     System.out.print("You've select the add DVD menu");
     System.out.print("Input DVD name, genre, actor, director : ");
     name = scanner.next();
     
-    genre = scanner.next();
+    genre = scanner.nextInt();
     
     actor = scanner.next();
     
     director = scanner.next();
     
     dbHandler.addDVD(name, genre, actor, director);
-    System.out.print(name + "DVD가 정상적으로 등록되었습니다!"); 
+    System.out.println("'"+ name + "' DVD가 정상적으로 등록되었습니다!"); 
+    System.out.println();
+    
+    System.out.println("Previous menu? [Press Enter]");
+    pause();
+    showAdminMenu();
   }
   
   private void updateDVD() {
     
-    String name, genre, actor, director;
+    String name, actor, director;
+    int genre;
     
     System.out.print("You've select the update DVD menu");
     System.out.print("Input DVD name, genre, actor, director : ");
     name = scanner.next();
     
-    genre = scanner.next();
+    genre = scanner.nextInt();
     
     actor = scanner.next();
     

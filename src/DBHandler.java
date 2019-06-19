@@ -22,10 +22,10 @@ public class DBHandler {
     return dvdList;
   }
 
-  public void addDVD(String name, String genre, String actor, String director) {
+  public void addDVD(String name, int genre, String actor, String director) {
     DB.addDVD(name, genre, actor, director);
   }
-  public void updateDVD(String name, String genre, String actor, String director) {
+  public void updateDVD(String name, int genre, String actor, String director) {
     DB.updateDVD(name, genre, actor, director);
   }
   public void deleteDVD(String name) {

@@ -8,9 +8,9 @@ public class DataBase {
   
   /*DataBase클래스는 Singleton 디자인패턴을 사용.*/
   private DataBase() {
-    addDVD("avengers", "SF/판타지", "로버트다우니주니어", "루소");
-    addDVD("기생충", "드라마", "송강호", "봉준호");
-    addDVD("애나벨", "호러", "패트릭 월슨", "게리 다우버맨");
+    addDVD("avengers", 1, "로버트다우니주니어", "루소");
+    addDVD("기생충", 2, "송강호", "봉준호");
+    addDVD("애나벨", 0, "패트릭 월슨", "게리 다우버맨");
   }
 
   private static class SingletonHolder {
@@ -25,14 +25,14 @@ public class DataBase {
     return dvdList;
   }
 
-  public void addDVD(String name, String genre, String actor, String director) {
+  public void addDVD(String name, int genre, String actor, String director) {
     DVD dvd = new DVD(name, genre, actor, director);
     // if dvd.name == exist?
     dvdList.add(dvd);
     System.out.println(dvd.toString());
   }
 
-  public void updateDVD(String name, String genre, String actor, String director) {
+  public void updateDVD(String name, int genre, String actor, String director) {
 
     Iterator<DVD> iterator = dvdList.iterator();
 

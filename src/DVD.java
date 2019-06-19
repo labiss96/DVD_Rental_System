@@ -1,24 +1,18 @@
 
 public class DVD {
     private String name;
-    private int dvdId;
+//    private int dvdId;
     private String genre;
     private boolean available;
     private String actor;
     private String director;
     
     //default »ý¼ºÀÚ
-    public DVD () {
-      this.name = "null";
-      this.genre = "null";
-      this.actor = "null";
-      this.director = "null";
-      this.available = false;
-    }
+    public DVD () {}
     
-    public DVD (String name, String genre, String actor, String director) {
+    public DVD (String name, int genre, String actor, String director) {
       this.name = name;
-      this.genre = genre;
+      this.genre = MovieGenre.values()[genre].toString();
       this.actor = actor;
       this.director = director;
       this.available = true;
@@ -34,8 +28,8 @@ public class DVD {
     public String getGenre() {
       return this.genre;
     }
-    public void setGenre(String genre) {
-      this.genre = genre;
+    public void setGenre(int genre) {
+      this.genre = MovieGenre.values()[genre].toString();;
     }
     
     public String getActor() {
