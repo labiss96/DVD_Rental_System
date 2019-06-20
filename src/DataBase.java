@@ -38,12 +38,14 @@ public class DataBase {
 
     while (iterator.hasNext()) {
       DVD dvd = iterator.next();
-      if (dvd.getName() == "name") {
+      if (dvd.getName() == name) {
         dvd.setGenre(genre);
         dvd.setActor(actor);
         dvd.setDirector(director);
+        System.out.println(dvd.toString());
+        break;
       }
-      System.out.println(dvd.toString());
+      
     }
   }
   public void deleteDVD(String name) {
@@ -51,9 +53,10 @@ public class DataBase {
     int idx = 0;
     while (iterator.hasNext()) {
       DVD dvd = iterator.next();
-      if (dvd.getName() == "name") {
+      if (dvd.getName() == name) {
         dvdList.remove(idx);
-        System.out.println("'"+name + "' 영화의 삭제요청이 정상적으로 처리되었습니다.");
+        System.out.println("'"+name+"' 영화의 삭제요청이 정상적으로 처리되었습니다.");
+        break;
       }
       idx++;
     }

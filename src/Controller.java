@@ -15,6 +15,7 @@ public class Controller {
     this.scanner = new Scanner(System.in);
   }
   
+  /* User,Admin 메뉴 선택 */
   public void choiceMenu(int selectMode) {
     switch(selectMode) {
       case 1:
@@ -26,6 +27,7 @@ public class Controller {
     }
   }
   
+  /* User 메뉴 */
   public void showUserMenu() {
     int selectNum = 0;
     
@@ -55,6 +57,7 @@ public class Controller {
       }
   }
   
+  /* Admin 메뉴 */
   public void showAdminMenu() {
    int selectNum = 0;
    
@@ -85,7 +88,7 @@ public class Controller {
      }
   }
   
-  
+  /* DB에 현재 저장된 DVD List 출력 */
   private void showDVDList() {
     List list = dbHandler.getDVDList();
     int index = 1;
@@ -106,17 +109,25 @@ public class Controller {
     System.out.println();
   }
   
+  /*해당 DVD에 대한 정보를 보여줌*/
   private void showDVDInfo(boolean isUser_) {
     boolean isUser = isUser_;
     List list = dbHandler.getDVDList();
     List movieInfo = new ArrayList();
+    String dvdName;
     
     int movieIndex = selectMovieNumber();
     movieIndex--;
     if(movieIndex == -1) {
-      showUserMenu();
+      if(isUser) {
+        showUserMenu();
+      } else {
+        showAdminMenu();
+      }
+      
     } else {
       movieInfo = dbHandler.getDVDInfo((String)list.get(movieIndex));
+      dvdName = (String) movieInfo.get(0);
       System.out.println("....................................");
       System.out.println("["+movieInfo.get(0)+"]");
       System.out.println("장르 : "+movieInfo.get(1));
@@ -125,31 +136,55 @@ public class Controller {
       System.out.println("....................................");
       System.out.println();
       
+      /*user모드에서 접근하였나면 -> 이전메뉴*/
       if(isUser == true) {
         System.out.println("Previous menu? [Press Enter]");
         pause();
         showDVDList();
         showDVDInfo(isUser);
-      } else { //Admin_Mod
-        String choice = "";
-        System.out.println(" modify DVD [press M]");
-        System.out.println(" delete DVD [press D]");
-        choice = scanner.next();
+      } else { //admin모드에서 접근하였다면 -> DVD 수정, 삭제, 이전메뉴
         
-        if(choice == "M" || choice == "m") {
-          //Modify DVD
+        int selcNum;
+        boolean correctNum = false;
+        System.out.println("1. modify DVD");
+        System.out.println("2. delete DVD");
+        System.out.println("0. Previous menu");
+        
+        while(!correctNum) {
+          selcNum = selectNumber();
+          
+          switch (selcNum) {
+            case 1:
+              //modify DVD
+              updateDVD(dvdName);
+              correctNum = true;
+              showDVDList();
+              showDVDInfo(false);
+              break;
+            case 2:
+              //delete DVD
+              deleteDVD(dvdName);
+              correctNum = true;
+              showDVDList();
+              showDVDInfo(false);
+              break;
+            case 0:
+              //previous menu
+              showDVDList();
+              showDVDInfo(isUser);
+              correctNum = true;
+              break;
+            default:
+              System.out.println("Choose again!");
+              correctNum = false;
+              
+          }
         }
-        else if(choice == "D" || choice == "d") {
-          //Delete DVD
-        }
-        
-        
-      }
-      
-      
+      }      
     }
   }
   
+  /* 입력값 로직 */
   private int selectNumber() {
     System.out.print("Select number : ");
     
@@ -177,6 +212,7 @@ public class Controller {
     return number;
   }
   
+  /* display */
   public void userDisplayMenu() {
     System.out.println("");
     System.out.println("....................................");
@@ -203,6 +239,7 @@ public class Controller {
   }
 
   
+  
   private void searchDVD() {
     System.out.print("You've select the search DVD menu [Enter to go back].");
     scanner.nextLine();
@@ -218,18 +255,25 @@ public class Controller {
     scanner.close(); 
     System.exit(0);
   }
+  
   private void addDVD() {
     String name, actor, director;
     int genre;
     
-    System.out.print("You've select the add DVD menu");
-    System.out.print("Input DVD name, genre, actor, director : ");
+    System.out.println("You've select the add DVD menu");
+    System.out.print("Input DVD name : ");
     name = scanner.next();
+    scanner.nextLine(); //enter를 읽어줌
     
+    System.out.println("[0]Horror, [1]SF, [2]Drama, [3]Romance, [4]Comedy, [5]Action, [6]Cartoon");
+    System.out.print("Input DVD genre number :");
     genre = scanner.nextInt();
+    scanner.nextLine(); //enter를 읽어줌
     
+    System.out.print("Input DVD actor : ");
     actor = scanner.next();
     
+    System.out.print("Input DVD director : ");
     director = scanner.next();
     
     dbHandler.addDVD(name, genre, actor, director);
@@ -241,31 +285,41 @@ public class Controller {
     showAdminMenu();
   }
   
-  private void updateDVD() {
+  private void updateDVD(String name) {
     
-    String name, actor, director;
+    String actor, director;
     int genre;
     
-    System.out.print("You've select the update DVD menu");
-    System.out.print("Input DVD name, genre, actor, director : ");
-    name = scanner.next();
-    
+    System.out.println("You've select the update DVD menu");
+    System.out.println();
+    System.out.println("[0]Horror, [1]SF, [2]Drama, [3]Romance, [4]Comedy, [5]Action, [6]Cartoon");
+    System.out.print("Input DVD genre number :");
     genre = scanner.nextInt();
+    scanner.nextLine(); //enter를 읽어줌
     
+    System.out.print("Input DVD actor : ");
     actor = scanner.next();
     
+    System.out.print("Input DVD director : ");
     director = scanner.next();
     
     dbHandler.updateDVD(name, genre, actor, director);
   }
   
-  private void deleteDVD() {
-    String name;
-    System.out.print("You've select the delete DVD menu");
-    System.out.print("Input DVD name : ");
-  
-    name = scanner.nextLine();
-    dbHandler.deleteDVD(name);
+  private void deleteDVD(String name) {
+    int confirm;
+    System.out.println("정말 '"+ name +"' DVD 정보를 삭제하시겠습니까?");
+    System.out.println("Yes[1] / No, previous menu[2]");
+    
+    confirm = scanner.nextInt();
+    
+    if(confirm == 1) {
+      dbHandler.deleteDVD(name);
+      showDVDList();
+      showDVDInfo(false);
+    } else {
+      return;
+    }
   }
   
   public static void pause() {
