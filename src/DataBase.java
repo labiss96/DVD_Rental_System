@@ -28,10 +28,11 @@ public class DataBase {
   }
 
   public void addDVD(String name, int genre, String actor, String director) {
-    DVD dvd = new DVD(name, genre, actor, director);
+    int id = dvdList.size();
+    DVD dvd = new DVD(name, genre, actor, director, id);
     // if dvd.name == exist?
     dvdList.add(dvd);
-    System.out.println(dvd.toString());
+    //System.out.println(dvd.toString());
   }
 
   public void modifyDVD(String name, int genre, String actor, String director) {
@@ -76,6 +77,7 @@ public class DataBase {
        infoList.add(dvd.getActor());
        infoList.add(dvd.getDirector());
        infoList.add(dvd.getAvail());
+       infoList.add(dvd.getId());
        break;
       } else {
         //System.out.println("'"+name+"' DVD에 대한 정보가 존재하지 않습니다.");

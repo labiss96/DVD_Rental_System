@@ -7,19 +7,19 @@ public class User {
   String userName;
   String phoneNum;
   String eMail;
-  List <String>rentaledList = new ArrayList(); 
+  List <String>rentedList = new ArrayList(); 
   
   public User() {}
   
   public List getRentedList() {
-    return rentaledList;
+    return rentedList;
   }
   public void addRentedDVD(String dvd) {
-    rentaledList.add(dvd);
+    rentedList.add(dvd);
   }
   public void returnRentedDVD(String returnDVD) {
     boolean isExist = false;
-    Iterator<String> iterator = rentaledList.iterator();
+    Iterator<String> iterator = rentedList.iterator();
     while(iterator.hasNext()) {
       String dvdName = iterator.next();
       if(dvdName == returnDVD) {
@@ -32,7 +32,7 @@ public class User {
     if(!isExist) {System.out.println("해당 dvd는 존재하지 않습니다.");}  
   }
   public boolean confirmRentLimit() {
-    int currentNumber = rentaledList.size();
+    int currentNumber = rentedList.size();
     System.out.println("현재 대여 가능 횟수 : " + (3-currentNumber));
     if(currentNumber < 3) {
       return true;

@@ -1,7 +1,7 @@
 
 public class DVD {
     private String name;
-    private static int id = 0;
+    private int id = 0;
     private String genre;
     private boolean available;
     private String actor;
@@ -10,8 +10,8 @@ public class DVD {
     //default »ý¼ºÀÚ
     public DVD () {}
     
-    public DVD (String name, int genre, String actor, String director) {
-      this.id += 1;
+    public DVD (String name, int genre, String actor, String director, int id) {
+      this.id = id;
       this.name = name;
       this.genre = MovieGenre.values()[genre].toString();
       this.actor = actor;
@@ -52,6 +52,9 @@ public class DVD {
     }
     public void setAvail(boolean available) {
       this.available = available;
+    }
+    public int getId() {
+      return this.id;
     }
     
     @Override

@@ -206,7 +206,7 @@ public class Controller {
     }
   }
   
-  /* 입력값 로직 */
+  /* 번호값 입력 */
   private int selectNumber() {
     System.out.print("Select number : ");
     
@@ -242,7 +242,7 @@ public class Controller {
     System.out.println("....................................");
     System.out.println("1. DVD list");
     System.out.println("2. Search DVD");
-    System.out.println("3. My rentaled list");
+    System.out.println("3. My rented list");
     System.out.println("9. Previous menu");
     System.out.println("0. Exit Program");
     System.out.println("....................................");
@@ -283,6 +283,7 @@ public class Controller {
         break;
       case 0:
         //previous menu
+        showUserMenu();
         break;
         
       default:
@@ -456,6 +457,7 @@ public class Controller {
     System.out.println("배우 : "+movieInfo.get(2));
     System.out.println("감독 : "+movieInfo.get(3));
     System.out.println("대여가능 여부 : "+movieInfo.get(4));
+    System.out.println("일련번호 : "+movieInfo.get(5));
     System.out.println("....................................");
     System.out.println();
   }
