@@ -78,7 +78,7 @@ public class DataBase {
        infoList.add(dvd.getAvail());
        break;
       } else {
-        System.out.println("'"+name+"' DVD에 대한 정보가 존재하지 않습니다.");
+        //System.out.println("'"+name+"' DVD에 대한 정보가 존재하지 않습니다.");
       }
     }
     return infoList;
@@ -96,6 +96,19 @@ public class DataBase {
       } 
     }
   }
+  
+  public void setReturned(String name) {
+Iterator<DVD> iterator = dvdList.iterator();
+    
+    while (iterator.hasNext()) {
+      DVD dvd = iterator.next();
+      if (dvd.getName() == name) {
+       dvd.setAvail(true);
+       break;
+      } 
+    }
+  }
+  
   public boolean confirmAvail(String name) {
     Iterator<DVD> iterator = dvdList.iterator();
     boolean avail = false;

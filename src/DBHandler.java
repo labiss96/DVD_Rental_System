@@ -48,7 +48,10 @@ public class DBHandler {
     return DB.getDVDInfo(name);
   }
   public void setRented(String name) {
-      DB.setRented(name);
+    DB.setRented(name);
+  }
+  public void setReturned(String name) {
+    DB.setReturned(name);
   }
   public boolean confirmAvail(String name) {
     return DB.confirmAvail(name);

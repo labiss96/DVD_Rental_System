@@ -11,13 +11,13 @@ public class User {
   
   public User() {}
   
-  public List getRentaledList() {
+  public List getRentedList() {
     return rentaledList;
   }
-  public void addRentaledDVD(String dvd) {
+  public void addRentedDVD(String dvd) {
     rentaledList.add(dvd);
   }
-  public void returnRentaledDVD(String returnDVD) {
+  public void returnRentedDVD(String returnDVD) {
     boolean isExist = false;
     Iterator<String> iterator = rentaledList.iterator();
     while(iterator.hasNext()) {

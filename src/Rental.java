@@ -6,17 +6,17 @@ public class Rental {
   public Rental() {}
   
   public void rentDVD(String dvd) {
-    user.addRentaledDVD(dvd);
+    user.addRentedDVD(dvd);
   }
   public void returnDVD(String returnDVD) {
-    user.returnRentaledDVD(returnDVD);
+    user.returnRentedDVD(returnDVD);
   }
   public boolean confirmLimit() {
     return user.confirmRentLimit();
   }
   
   public List getRentalList() {
-    return user.getRentaledList();
+    return user.getRentedList();
   }
   
 }

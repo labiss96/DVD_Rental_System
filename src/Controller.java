@@ -124,7 +124,7 @@ public class Controller {
     int movieIndex = selectMovieNumber();
     movieIndex--;
     if(movieIndex == -1) {
-      if(isUser) {
+      if( isUser) {
         showUserMenu();
       } else {
         showAdminMenu();
@@ -132,14 +132,16 @@ public class Controller {
       
     } else {
       movieInfo = dbHandler.getDVDInfo((String)list.get(movieIndex));
+      //System.out.println((String)list.get(movieIndex));
       dvdName = (String) movieInfo.get(0);
-      System.out.println("....................................");
-      System.out.println("["+movieInfo.get(0)+"]");
-      System.out.println("장르 : "+movieInfo.get(1));
-      System.out.println("배우 : "+movieInfo.get(2));
-      System.out.println("감독 : "+movieInfo.get(3));
-      System.out.println("대여가능 여부 : "+movieInfo.get(4));
-      System.out.println("....................................");
+      toStringDVD(movieInfo);
+//      System.out.println("....................................");
+//      System.out.println("["+movieInfo.get(0)+"]");
+//      System.out.println("장르 : "+movieInfo.get(1));
+//      System.out.println("배우 : "+movieInfo.get(2));
+//      System.out.println("감독 : "+movieInfo.get(3));
+//      System.out.println("대여가능 여부 : "+movieInfo.get(4));
+//      System.out.println("....................................");
       
       /*user모드에서 접근하였나면 -> 이전메뉴*/
       if(isUser == true) {
@@ -150,11 +152,12 @@ public class Controller {
         int selcNum = selectNumber();
      
         if(selcNum == 1) {
-          //rental this dvd!
+          //rent dvd
           rentDVD(dvdName);
           showDVDList();
           showDVDInfo(isUser);
         } else if(selcNum == 0) {
+          //previous menu
           showDVDList();
           showDVDInfo(isUser);
         } else {
@@ -268,7 +271,6 @@ public class Controller {
     System.out.println("....................................");
     System.out.println();
 
-    //while()
     int selcNum = selectNumber();
     
     switch(selcNum) {
@@ -291,13 +293,19 @@ public class Controller {
   }
   
   private void searchName() {
-    String name;
+    String dvdName = new String("");
     List movieInfo = new ArrayList();
     System.out.println();
     System.out.print("찾으시려는 DVD 이름을 입력해주세요 :");
     
-    name = scanner.next();
-    movieInfo = dbHandler.getDVDInfo(name);
+    dvdName = scanner.next();
+    String tm = "애나벨";
+    System.out.println(tm == dvdName);
+    System.out.println(tm.equals(dvdName));
+    //dvdName = "애나벨";
+    //System.out.println("'"+dvdName+"'");
+    //movieInfo = dbHandler.getDVDInfo(dvdName);
+    //movieInfo = dbHandler.getDVDInfo(dvdName);
     //toStringDVD(movieInfo);
 //    System.out.println("....................................");
 //    System.out.println("["+movieInfo.get(0)+"]");
@@ -423,12 +431,27 @@ public class Controller {
     if(selcNum == 0) {
       showUserMenu();
     } else {
-      movieInfo = dbHandler.getDVDInfo((String)list.get(idx-1));
+      movieInfo = dbHandler.getDVDInfo((String)list.get(selcNum-1));
       dvdName = (String) movieInfo.get(0);
       toStringDVD(movieInfo);
+      
+      System.out.println("1. Return DVD");
+      System.out.println("0. Previous menu");
+      
+      int selcRentMenuNum = selectNumber();
+      System.out.print("select number : ");
+      if(selcRentMenuNum == 1) {
+        returnDVD(dvdName);
+        showUserRentedDVD();
+      } else if(selcRentMenuNum == 0) {
+        showUserRentedDVD();
+      }
+       
     }
-    
-    
+  }
+  private void returnDVD(String dvd) {
+    rental.returnDVD(dvd);
+    dbHandler.setReturned(dvd);
   }
   
   private void toStringDVD(List movieInfo) {
@@ -437,6 +460,7 @@ public class Controller {
     System.out.println("장르 : "+movieInfo.get(1));
     System.out.println("배우 : "+movieInfo.get(2));
     System.out.println("감독 : "+movieInfo.get(3));
+    System.out.println("대여가능 여부 : "+movieInfo.get(4));
     System.out.println("....................................");
     System.out.println();
   }
