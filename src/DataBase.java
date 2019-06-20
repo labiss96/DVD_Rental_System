@@ -11,6 +11,8 @@ public class DataBase {
     addDVD("avengers", 1, "로버트다우니주니어", "루소");
     addDVD("기생충", 2, "송강호", "봉준호");
     addDVD("애나벨", 0, "패트릭 월슨", "게리 다우버맨");
+    addDVD("토이스토리4", 6, "톰 행크스/우디", "조시 쿨리");
+    addDVD("존윅3", 5, "키아누 리브스", "채드 스타헬스키");
   }
 
   private static class SingletonHolder {
@@ -73,12 +75,40 @@ public class DataBase {
        infoList.add(dvd.getGenre());
        infoList.add(dvd.getActor());
        infoList.add(dvd.getDirector());
+       infoList.add(dvd.getAvail());
        break;
+      } else {
+        System.out.println("'"+name+"' DVD에 대한 정보가 존재하지 않습니다.");
       }
-  }
+    }
     return infoList;
     
   }
-   
+  
+  public void setRented(String name) {
+    Iterator<DVD> iterator = dvdList.iterator();
+    
+    while (iterator.hasNext()) {
+      DVD dvd = iterator.next();
+      if (dvd.getName() == name) {
+       dvd.setAvail(false);
+       break;
+      } 
+    }
+  }
+  public boolean confirmAvail(String name) {
+    Iterator<DVD> iterator = dvdList.iterator();
+    boolean avail = false;
+    while (iterator.hasNext()) {
+      DVD dvd = iterator.next();
+      if (dvd.getName() == name) {
+       avail = dvd.getAvail();
+       break;
+      } 
+    }
+    return avail;
+  }
+  
+  
 
 }

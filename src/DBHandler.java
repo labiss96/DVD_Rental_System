@@ -18,9 +18,22 @@ public class DBHandler {
       String dvdName = iterator.next().getName();
       dvdList.add(dvdName);
     }
-
     return dvdList;
   }
+  
+//  public List searchDVD(String name) {
+//    List dvdDB = DB.getDVDList();
+//    List dvdList = new ArrayList();
+//    
+//    Iterator<DVD> iterator = dvdDB.iterator();
+//
+//    while (iterator.hasNext()) {
+//      String dvdName = iterator.next().getName();
+//      dvdList.add(dvdName);
+//    }
+//
+//    return dvdList;
+//  }
 
   public void addDVD(String name, int genre, String actor, String director) {
     DB.addDVD(name, genre, actor, director);
@@ -33,5 +46,11 @@ public class DBHandler {
   }
   public List getDVDInfo(String name) {
     return DB.getDVDInfo(name);
+  }
+  public void setRented(String name) {
+      DB.setRented(name);
+  }
+  public boolean confirmAvail(String name) {
+    return DB.confirmAvail(name);
   }
 }

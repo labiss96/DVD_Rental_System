@@ -8,6 +8,7 @@ public class Controller {
   private Scanner scanner;
   UI ui = new UI();
   DBHandler dbHandler = new DBHandler();
+  Rental rental = new Rental();
   //boolean mode;
   
   //default 생성자
@@ -40,8 +41,12 @@ public class Controller {
           showDVDInfo(true);
           break;
         case 2:
+          //search dvd
+          searchDVD();
           break;
         case 3:
+          //rentaled list
+          showUserRentedDVD();
           break;
           
         case 9:
@@ -133,15 +138,29 @@ public class Controller {
       System.out.println("장르 : "+movieInfo.get(1));
       System.out.println("배우 : "+movieInfo.get(2));
       System.out.println("감독 : "+movieInfo.get(3));
+      System.out.println("대여가능 여부 : "+movieInfo.get(4));
       System.out.println("....................................");
-      System.out.println();
       
       /*user모드에서 접근하였나면 -> 이전메뉴*/
       if(isUser == true) {
-        System.out.println("Previous menu? [Press Enter]");
-        pause();
-        showDVDList();
-        showDVDInfo(isUser);
+        System.out.println("1. Rent this DVD");
+        System.out.println("0. Previous menu");
+        System.out.println();
+        
+        int selcNum = selectNumber();
+     
+        if(selcNum == 1) {
+          //rental this dvd!
+          rentDVD(dvdName);
+          showDVDList();
+          showDVDInfo(isUser);
+        } else if(selcNum == 0) {
+          showDVDList();
+          showDVDInfo(isUser);
+        } else {
+          System.out.println("Choose again!");
+        }
+        
       } else { //admin모드에서 접근하였다면 -> DVD 수정, 삭제, 이전메뉴
         
         int selcNum;
@@ -241,8 +260,54 @@ public class Controller {
   
   
   private void searchDVD() {
-    System.out.print("You've select the search DVD menu [Enter to go back].");
+    System.out.println("You've select the search DVD menu");
+    System.out.println("....................................");
+    System.out.println("1. Search dvd name");
+    System.out.println("2. DVD category");
+    System.out.println("0. Previous menu");
+    System.out.println("....................................");
+    System.out.println();
+
+    //while()
+    int selcNum = selectNumber();
+    
+    switch(selcNum) {
+      case 1:
+        //name
+        searchName();
+        break;
+      case 2:
+        //genre
+        break;
+      case 0:
+        //previous menu
+        break;
+        
+      default:
+        System.out.println("Choose again!");
+    }
+    
     scanner.nextLine();
+  }
+  
+  private void searchName() {
+    String name;
+    List movieInfo = new ArrayList();
+    System.out.println();
+    System.out.print("찾으시려는 DVD 이름을 입력해주세요 :");
+    
+    name = scanner.next();
+    movieInfo = dbHandler.getDVDInfo(name);
+    //toStringDVD(movieInfo);
+//    System.out.println("....................................");
+//    System.out.println("["+movieInfo.get(0)+"]");
+//    System.out.println("장르 : "+movieInfo.get(1));
+//    System.out.println("배우 : "+movieInfo.get(2));
+//    System.out.println("감독 : "+movieInfo.get(3));
+//    System.out.println("....................................");
+    System.out.println(movieInfo);
+    
+    
   }
   
   private void rentalList() {
@@ -320,6 +385,60 @@ public class Controller {
     } else {
       return;
     }
+  }
+  
+  private void rentDVD(String dvdName) {
+    
+    if(dbHandler.confirmAvail(dvdName)) {
+      if(rental.confirmLimit()) {
+        rental.rentDVD(dvdName);
+        dbHandler.setRented(dvdName);
+        System.out.println("DVD가 정상적으로 대여되었습니다.");
+      } else {
+        System.out.println("최대 대여가능 횟수를 초과하였습니다.");
+      }
+    } else {
+      System.out.println("현재 해당 DVD는 대여 중이거나, 대여불가 상품입니다.");
+    }
+  }
+  
+  private void showUserRentedDVD() {
+    List list = rental.getRentalList();
+    Iterator<String> iterator = list.iterator();
+    List movieInfo = new ArrayList();
+    int idx = 1;
+    String dvdName;
+    System.out.println();
+    System.out.println("....................................");
+    System.out.println("<<Rented DVD List>>");
+    while(iterator.hasNext()) {
+      System.out.println(idx + ". " + iterator.next());
+      idx++;
+    }
+    System.out.println("....................................");
+    System.out.println("0. Previous menu");
+    System.out.println();
+    
+    int selcNum = selectNumber();
+    if(selcNum == 0) {
+      showUserMenu();
+    } else {
+      movieInfo = dbHandler.getDVDInfo((String)list.get(idx-1));
+      dvdName = (String) movieInfo.get(0);
+      toStringDVD(movieInfo);
+    }
+    
+    
+  }
+  
+  private void toStringDVD(List movieInfo) {
+    System.out.println("....................................");
+    System.out.println("["+movieInfo.get(0)+"]");
+    System.out.println("장르 : "+movieInfo.get(1));
+    System.out.println("배우 : "+movieInfo.get(2));
+    System.out.println("감독 : "+movieInfo.get(3));
+    System.out.println("....................................");
+    System.out.println();
   }
   
   public static void pause() {
