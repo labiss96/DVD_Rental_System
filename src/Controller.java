@@ -29,7 +29,7 @@ public class Controller {
   }
   
   /* User 메뉴 */
-  public void showUserMenu() {
+  private void showUserMenu() {
     int selectNum = 0;
     
       userDisplayMenu();
@@ -42,11 +42,11 @@ public class Controller {
           break;
         case 2:
           //search dvd
-          searchDVD();
+          searchMenu();
           break;
         case 3:
           //rentaled list
-          showUserRentedDVD();
+          showRentedList();
           break;
           
         case 9:
@@ -63,7 +63,7 @@ public class Controller {
   }
   
   /* Admin 메뉴 */
-  public void showAdminMenu() {
+  private void showAdminMenu() {
    int selectNum = 0;
    
      adminDisplayMenu();
@@ -178,7 +178,7 @@ public class Controller {
           switch (selcNum) {
             case 1:
               //modify DVD
-              updateDVD(dvdName);
+              modifyDVD(dvdName);
               correctNum = true;
               showDVDList();
               showDVDInfo(false);
@@ -235,7 +235,7 @@ public class Controller {
   }
   
   /* display */
-  public void userDisplayMenu() {
+  private void userDisplayMenu() {
     System.out.println("");
     System.out.println("....................................");
     System.out.println("select menu [User Mod]");
@@ -248,7 +248,7 @@ public class Controller {
     System.out.println("....................................");
   }
   
-  public void adminDisplayMenu() {
+  private void adminDisplayMenu() {
     System.out.println("");
     System.out.println("....................................");
     System.out.println("select menu [Admin Mod]");
@@ -262,7 +262,7 @@ public class Controller {
 
   
   
-  private void searchDVD() {
+  private void searchMenu() {
     System.out.println("You've select the search DVD menu");
     System.out.println("....................................");
     System.out.println("1. Search dvd name");
@@ -276,7 +276,7 @@ public class Controller {
     switch(selcNum) {
       case 1:
         //name
-        searchName();
+        searchTitle();
         break;
       case 2:
         //genre
@@ -292,7 +292,7 @@ public class Controller {
     scanner.nextLine();
   }
   
-  private void searchName() {
+  private void searchTitle() {
     String dvdName = new String("");
     List movieInfo = new ArrayList();
     System.out.println();
@@ -316,11 +316,6 @@ public class Controller {
     System.out.println(movieInfo);
     
     
-  }
-  
-  private void rentalList() {
-    System.out.print("You've select the rental List menu [Enter to go back].");
-    scanner.nextLine();
   }
   
   private void exitProgram() {
@@ -358,12 +353,12 @@ public class Controller {
     showAdminMenu();
   }
   
-  private void updateDVD(String name) {
+  private void modifyDVD(String title) {
     
     String actor, director;
     int genre;
     
-    System.out.println("You've select the update DVD menu");
+    System.out.println("You've select the modify DVD menu");
     System.out.println();
     System.out.println("[0]Horror, [1]SF, [2]Drama, [3]Romance, [4]Comedy, [5]Action, [6]Cartoon");
     System.out.print("Input DVD genre number :");
@@ -376,18 +371,18 @@ public class Controller {
     System.out.print("Input DVD director : ");
     director = scanner.next();
     
-    dbHandler.updateDVD(name, genre, actor, director);
+    dbHandler.modifyDVD(title, genre, actor, director);
   }
   
-  private void deleteDVD(String name) {
+  private void deleteDVD(String title) {
     int confirm;
-    System.out.println("정말 '"+ name +"' DVD 정보를 삭제하시겠습니까?");
+    System.out.println("정말 '"+ title +"' DVD 정보를 삭제하시겠습니까?");
     System.out.println("Yes[1] / No, previous menu[2]");
     
     confirm = scanner.nextInt();
     
     if(confirm == 1) {
-      dbHandler.deleteDVD(name);
+      dbHandler.deleteDVD(title);
       showDVDList();
       showDVDInfo(false);
     } else {
@@ -395,12 +390,12 @@ public class Controller {
     }
   }
   
-  private void rentDVD(String dvdName) {
+  private void rentDVD(String dvdTitle) {
     
-    if(dbHandler.confirmAvail(dvdName)) {
+    if(dbHandler.confirmAvail(dvdTitle)) {
       if(rental.confirmLimit()) {
-        rental.rentDVD(dvdName);
-        dbHandler.setRented(dvdName);
+        rental.rentDVD(dvdTitle);
+        dbHandler.setRented(dvdTitle);
         System.out.println("DVD가 정상적으로 대여되었습니다.");
       } else {
         System.out.println("최대 대여가능 횟수를 초과하였습니다.");
@@ -410,7 +405,7 @@ public class Controller {
     }
   }
   
-  private void showUserRentedDVD() {
+  private void showRentedList() {
     List list = rental.getRentalList();
     Iterator<String> iterator = list.iterator();
     List movieInfo = new ArrayList();
@@ -442,16 +437,16 @@ public class Controller {
       System.out.print("select number : ");
       if(selcRentMenuNum == 1) {
         returnDVD(dvdName);
-        showUserRentedDVD();
+        showRentedList();
       } else if(selcRentMenuNum == 0) {
-        showUserRentedDVD();
+        showRentedList();
       }
        
     }
   }
-  private void returnDVD(String dvd) {
-    rental.returnDVD(dvd);
-    dbHandler.setReturned(dvd);
+  private void returnDVD(String dvdTitle) {
+    rental.returnDVD(dvdTitle);
+    dbHandler.setReturned(dvdTitle);
   }
   
   private void toStringDVD(List movieInfo) {

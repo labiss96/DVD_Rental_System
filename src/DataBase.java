@@ -34,14 +34,14 @@ public class DataBase {
     System.out.println(dvd.toString());
   }
 
-  public void updateDVD(String name, int genre, String actor, String director) {
+  public void modifyDVD(String name, int genre, String actor, String director) {
 
     Iterator<DVD> iterator = dvdList.iterator();
 
     while (iterator.hasNext()) {
       DVD dvd = iterator.next();
       if (dvd.getName() == name) {
-        dvd.setGenre(genre);
+        dvd.setGenre(genre);    
         dvd.setActor(actor);
         dvd.setDirector(director);
         System.out.println(dvd.toString());

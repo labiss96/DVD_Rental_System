@@ -1,7 +1,7 @@
 
 public class DVD {
     private String name;
-//    private int dvdId;
+    private static int id = 0;
     private String genre;
     private boolean available;
     private String actor;
@@ -11,6 +11,7 @@ public class DVD {
     public DVD () {}
     
     public DVD (String name, int genre, String actor, String director) {
+      this.id += 1;
       this.name = name;
       this.genre = MovieGenre.values()[genre].toString();
       this.actor = actor;
